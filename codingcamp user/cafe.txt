@@ -1,0 +1,2955 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+<html lang="ko">
+<head>
+	<title>카페</title>
+	
+
+
+
+<meta name="robots" content="noindex, nofollow" />
+<meta http-equiv="Content-Type" content="text/html;charset=KSC5601">
+<meta http-equiv="X-UA-Compatible" content="requiresActiveX=true">
+
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?2" />
+<meta name="referrer" content="always" />
+
+
+
+ <script>
+var g_sUserId = "";
+var g_sGroupId = "false";
+var g_sCafeHome = "https://cafe.naver.com/" + "studentcodingcamp";
+var g_sClubId = "30367563";
+var g_mobileWebLink = "https://m.cafe.naver.com/studentcodingcamp";
+
+var g_sCafeThumbUrl = 'https://cafethumb.pstatic.net';
+var g_sUpcafeUrl = 'https://up.cafe.naver.com';
+var g_sCafeUrl = "https://cafe.naver.com";
+var g_sCafeUrlOnly = "studentcodingcamp";
+var g_sCafeImgUrl = 'https://cafe.pstatic.net';
+var g_sCafeFileUrl = 'https://cafefiles.pstatic.net';
+var g_sItem2Url = 'https://item2.naver.com';
+var g_sLoginUrl = "http://nid.naver.com";
+var g_sNidHttps = 'https://nid.naver.com';
+var g_sCafeSectionUrl = "https://section.cafe.naver.com";
+var g_sNdriveHttps = "https://mybox.naver.com";
+var g_sKin = "http://kin.naver.com";
+var g_sLogOutReturnUrl = "https://nid.naver.com/nidlogin.login?mode=form&svctype=40960&id=&url=https://cafe.naver.com/LoginCheck.nhn?m=login";
+var g_sCafeTalk = 'https://talk.cafe.naver.com';
+var g_sGfmarketDomain = 'http://m.gfmarket.naver.com';
+var g_sGfmarketThumbnailDomain = 'https://storep-phinf.pstatic.net';
+var g_sPhotoInfraUploadDomain = 'cafe.upphoto.naver.com';
+var g_sDThumbUrl = 'https://dthumb-phinf.pstatic.net/?src=';
+var g_sNaverStatUiUrl = 'https://cafe.stat.naver.com/cafe';
+var g_sBAStatDomain = 'https://scv.band.us';
+var g_sApigwUrl = 'https://apis.naver.com';
+var g_sCafeHomePcUrl = 'https://section.cafe.naver.com';
+
+var g_sNicknameRegex = /([a-zA-Z0-9ㄱ-힣\_\s]+)/gi;
+var g_mainIframeWidth = '860';
+</script>
+
+
+<link rel="stylesheet" href="/static/css/main/Style/ArticleListStyleWide-1587621617000-32318.css" type="text/css">
+
+
+<script type="text/javascript" async src="https://ssl.pstatic.net/tveta/libs/ssp/ssp.web.sdk.js"></script>
+
+
+
+
+<script type="text/javascript" src="/static/js/mycafe/ArticleListHeadScriptWide-1587373241000-142967.js" charset="EUC-KR"></script>
+
+<script type="text/javascript" src="/static/js/mycafe/ArticleListHeadUTF8Script-1591250424000-232542.js" charset="UTF-8"></script>
+
+
+<script type="text/javascript">
+var LH = new LH_create();
+
+var oIframeHandler = new IframeHandler({
+	bRelocation : false,
+	sDomain : "http://cafe.naver.com",
+	sCafeUrl : "studentcodingcamp",
+    bCopyParentStyle : false
+});
+
+oOneToOneChatLauncher.setIsCafeMember(false);
+</script>
+
+
+
+
+
+	<link rel="stylesheet" href="/static/css/main/css/wide/1080_cafe-1626654089000-225429.css" type="text/css">
+
+	<link rel="stylesheet" href="/static/css/main/css/wide/1080_skin_white-1588906820000-20365.css" type="text/css">
+
+	
+    <meta name="decorator" content="article_list_for_wide" />
+    
+
+
+
+<script type="text/javascript">
+
+    
+
+    
+    function checkLogin(selection) {
+        var loginCheckUrl = "/LoginCheck.nhn?m=check";
+        var loginCheckOk = "https://cafe.naver.com/LoginCheck.nhn?m=login";
+
+        new Ajax( loginCheckUrl,
+            {
+                onLoad  : function(req) {
+                    var sReqText=req.responseText.trim();
+
+                    if (sReqText=="LOGOUT") {
+
+                        parent.document.getElementById("layerd_notice01").style.display = "none";
+
+                        parent.openLoginLayer();
+                        parent.document.checkFrame.location.replace("https://nid.naver.com/nidlogin.login?mode=form&svctype=40960&id=&url=" + loginCheckOk + "&pmsg=아직 게시글이 등록되지 않았습니다");
+                    } else {
+                        parent.closeLoginLayer();
+                        if(selection == 0){
+                            changeMemberlevel();
+                        }else if(selection == 1){
+                            moveArticles();
+                        }else if(selection == 2){
+                            removeArticles();
+                        }else if(selection == 3){
+                            modifyArticleHeads();
+                        }
+                    }
+                },
+                "timeout":2000
+            }
+        );
+    }
+
+    // 답글 수 읽어 오기
+    function showReplies(clubid, articleid, menuid, naverSearch) {
+        var replyTr = document.getElementById("reply_" + articleid);
+        var elReply = document.getElementById("elReply_" + articleid);
+
+        if (replyTr.style.display == "none") {
+        	var param_uri = "clubid=30367563&page=1&menuid=75&boardtype=L";
+
+			
+			
+			
+
+            var ajax = new Ajax("/RefArticleListForSearchAll.nhn?" + param_uri + "&articleid=" + articleid + "&memuid=" + menuid + "&naverSearch=" + naverSearch, {
+                method : "GET",
+                suspend : true,
+                onLoad : function(req) {
+                    replyTr.innerHTML = req.responseText;
+                    replyTr.style.display="";
+                    elReply.className = elReply.className + " is_selected";
+                    parentResizeIframe('cafe_main', 'true');
+                    
+                }
+            });
+            ajax.request();
+        } else {
+            replyTr.innerHTML = "";
+            replyTr.style.display = "none";
+            elReply.className = elReply.className.replace("is_selected", "");
+            parentResizeIframe('cafe_main', 'true');
+        }
+    }
+</script>
+
+</head>
+<body>
+
+<div id="content-area">
+<div id="main-area" class="skin-1080 fl">
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/static/js/mycafe/common/groupssp/ScriptGroupSSPAdvert-1617013670000-12349.js" charset="EUC-KR"></script>
+
+
+<script type="text/javascript">
+var oGroupSSPAdvertFinder = new cafe.GroupSSP.Advert.Finder();
+var oGroupSSPAdvertReporter = new cafe.GroupSSP.Advert.Reporter();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="sub-tit">
+	<div class="title_area">
+		<div class="info_tit">
+			
+				
+				
+				
+				
+					<h3 class="sub-tit-color">[9기] 자기소개</h3>
+					
+						<a href="#" class="bookmark" role="button"><span class="blind">즐겨찾는 게시판</span></a>
+						
+						
+						
+							<a href="#" onclick="setupFavoriteCafeMenu(false, 30367563, 75);clickcr(this, 'btp.fav', '', '', event);return false;" id="favorite" class="_rosRestrict ico_bookmark">
+								<span class="blind">즐겨찾는 게시판 등록</span>
+							</a>
+						
+						
+					
+				
+				
+			
+		</div>
+
+	
+	</div>
+
+	<div class="me_feed">
+	
+	
+		
+			
+				
+			
+			
+		
+	
+
+	
+	</div>
+</div>
+
+
+
+	
+
+
+
+
+
+
+
+
+
+<div class="list-style">
+
+	
+		
+		
+		
+			
+			
+			
+
+			
+			
+			<div class="sort_area">
+				
+					
+				
+				
+
+				
+				<div class="check_box">
+					<input type="checkbox" id="notice_hidden">
+					<label for="notice_hidden">공지 숨기기</label>
+				</div>
+				
+
+				
+				
+				<div class="sort_form">
+					<a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=C" onclick="clickcr(this, 'btp.wzine', '', '', event);" class="sort_card " ><span class="blind">카드형</span></a>
+					
+					<a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=I" onclick="clickcr(this, 'btp.album', '', '', event);" class="sort_album "><span class="blind">앨범형</span></a>
+					<a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L" onclick="clickcr(this, 'btp.board', '', '', event);" class="sort_list  is_selected "><span class="blind">목록형</span></a>
+				</div>
+				
+
+				
+				
+
+				
+
+				
+				<div id="listSizeSelectDiv" class="select_component2" style="width: 80px">
+					<a href="#" onclick="nhn.search.toggleBoxLayer('listSizeSelectDiv');return false;" class="select_box">15개씩</a>
+					<ul class="select_list">
+						
+							<li>
+								
+									
+									
+										<a href="/ArticleList.nhn?search.clubid=30367563&search.boardtype=L&search.menuid=75&search.marketBoardTab=D&search.specialmenutype=&userDisplay=5">5개씩</a>
+									
+								
+							</li>
+						
+							<li>
+								
+									
+									
+										<a href="/ArticleList.nhn?search.clubid=30367563&search.boardtype=L&search.menuid=75&search.marketBoardTab=D&search.specialmenutype=&userDisplay=10">10개씩</a>
+									
+								
+							</li>
+						
+							<li>
+								
+									
+									
+										<a href="/ArticleList.nhn?search.clubid=30367563&search.boardtype=L&search.menuid=75&search.marketBoardTab=D&search.specialmenutype=&userDisplay=15">15개씩</a>
+									
+								
+							</li>
+						
+							<li>
+								
+									
+									
+										<a href="/ArticleList.nhn?search.clubid=30367563&search.boardtype=L&search.menuid=75&search.marketBoardTab=D&search.specialmenutype=&userDisplay=20">20개씩</a>
+									
+								
+							</li>
+						
+							<li>
+								
+									
+									
+										<a href="/ArticleList.nhn?search.clubid=30367563&search.boardtype=L&search.menuid=75&search.marketBoardTab=D&search.specialmenutype=&userDisplay=30">30개씩</a>
+									
+								
+							</li>
+						
+							<li>
+								
+									
+									
+										<a href="/ArticleList.nhn?search.clubid=30367563&search.boardtype=L&search.menuid=75&search.marketBoardTab=D&search.specialmenutype=&userDisplay=40">40개씩</a>
+									
+								
+							</li>
+						
+							<li>
+								
+									
+									
+										<a href="/ArticleList.nhn?search.clubid=30367563&search.boardtype=L&search.menuid=75&search.marketBoardTab=D&search.specialmenutype=&userDisplay=50">50개씩</a>
+									
+								
+							</li>
+						
+					</ul>
+				</div>
+				
+			</div>
+		
+	
+</div>
+
+<div class="article-board m-tcol-c" id="upperArticleList">
+	
+	
+	
+
+	<table>
+		<caption><span class="blind">게시물 목록</span></caption>
+		<colgroup>
+			
+				
+				
+					
+						
+							<col style="width:88px">
+							<col>
+							<col style="width:118px">
+							<col style="width:80px">
+							<col style="width:68px">
+							<col style="width:68px">
+						
+						
+					
+				
+			
+		</colgroup>
+		<thead>
+		
+		<tr id="normalTableTitle" >
+			<th>
+				
+				
+			</th>
+			<th scope="col"><span class="article_title">제목</span></th>
+			<th scope="col" class="th_name">작성자</th>
+			<th scope="col">작성일</th>
+			<th scope="col">조회</th>
+			
+				<th scope="col">
+					<a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.useuparticle=true&userDisplay=15" class="sort_likes">좋아요</a>
+				</th>
+			
+		</tr>
+		<tr id="simpleTableTitle" style="display:none;">
+			
+				<th colspan="6" style="height:0px;padding: 0px;"></th>
+			
+			
+		</tr>
+		</thead>
+		<tbody>
+		
+		
+			
+			
+				
+				
+					
+					
+				
+			
+
+			
+				
+				
+
+				<tr class="_noticeArticle board-notice type_required">
+					<td colspan="2" class="td_article">
+						
+						<div class="board-tag">
+							<strong class="board-tag-txt">
+								<span class="inner">필독</span>
+							</strong>
+                        </div>
+						<div class="board-list">
+							<div class="inner_list">
+								
+								
+									
+									
+										
+									
+								
+								<a href='/ArticleRead.nhn?clubid=30367563&amp;menuid=75&amp;boardtype=L&amp;page=1&amp;specialmenutype=&amp;userDisplay=15&amp;articleid=3' onclick="clickcr(this, 'gnr.notice','','',event);" class="article">
+                                    
+                                    
+
+									[필독] 대학생 코딩캠프 카페 이용 규칙 + 닉네임 설정 규칙
+								</a>
+
+								
+								
+								
+
+
+								
+								
+									<a href="/ArticleRead.nhn?clubid=30367563&amp;menuid=75&amp;boardtype=L&amp;page=1&amp;specialmenutype=&amp;userDisplay=15&amp;articleid=3&amp;commentFocus=true" onclick="clickcr(this, 'gnr.noticecmt', '', '', event);" class="cmt">
+										[<em>10</em>]
+									</a>
+								
+
+								
+								
+							</div>
+						</div>
+					</td>
+
+					<td class="td_name"><div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'codeitofficial',3,'대코캠 운영진','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">대코캠 운영진</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("top_codeitofficial_0"));</script></td>
+					<td class="td_date">2021.02.15.</td>
+					<td class="td_view">1.3만</td>
+					
+						<td class="td_likes">9</td>
+					
+				</tr>
+			
+				
+				
+
+				<tr class="_noticeArticle board-notice type_main">
+					<td colspan="2" class="td_article">
+						
+						<div class="board-tag">
+							<strong class="board-tag-txt">
+								<span class="inner">공지</span>
+							</strong>
+                        </div>
+						<div class="board-list">
+							<div class="inner_list">
+								
+								
+									
+									
+										
+									
+								
+								<a href='/ArticleRead.nhn?clubid=30367563&amp;menuid=75&amp;boardtype=L&amp;page=1&amp;specialmenutype=&amp;userDisplay=15&amp;articleid=10127' onclick="clickcr(this, 'gnr.notice','','',event);" class="article">
+                                    
+                                    
+
+									[출석포기자 부활권 사용 방법 안내] 4회이상 결석하셨더라도 아직 포기하지 마세요!
+								</a>
+
+								
+								
+								
+
+
+								
+								
+									<a href="/ArticleRead.nhn?clubid=30367563&amp;menuid=75&amp;boardtype=L&amp;page=1&amp;specialmenutype=&amp;userDisplay=15&amp;articleid=10127&amp;commentFocus=true" onclick="clickcr(this, 'gnr.noticecmt', '', '', event);" class="cmt">
+										[<em>27</em>]
+									</a>
+								
+
+								
+								
+							</div>
+						</div>
+					</td>
+
+					<td class="td_name"><div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'ralrally',3,'매니저 현','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">매니저 현</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("top_ralrally_1"));</script></td>
+					<td class="td_date">2021.05.13.</td>
+					<td class="td_view">5,621</td>
+					
+						<td class="td_likes">7</td>
+					
+				</tr>
+			
+				
+				
+
+				<tr class="_noticeArticle board-notice type_main">
+					<td colspan="2" class="td_article">
+						
+						<div class="board-tag">
+							<strong class="board-tag-txt">
+								<span class="inner">공지</span>
+							</strong>
+                        </div>
+						<div class="board-list">
+							<div class="inner_list">
+								
+								
+									
+									
+										
+									
+								
+								<a href='/ArticleRead.nhn?clubid=30367563&amp;menuid=75&amp;boardtype=L&amp;page=1&amp;specialmenutype=&amp;userDisplay=15&amp;articleid=426' onclick="clickcr(this, 'gnr.notice','','',event);" class="article">
+                                    
+                                    
+
+									[필독] 어떤 강의를 들어야 할까? 고민 된다면!
+								</a>
+
+								
+								
+								
+
+
+								
+								
+									<a href="/ArticleRead.nhn?clubid=30367563&amp;menuid=75&amp;boardtype=L&amp;page=1&amp;specialmenutype=&amp;userDisplay=15&amp;articleid=426&amp;commentFocus=true" onclick="clickcr(this, 'gnr.noticecmt', '', '', event);" class="cmt">
+										[<em>27</em>]
+									</a>
+								
+
+								
+								
+							</div>
+						</div>
+					</td>
+
+					<td class="td_name"><div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'codeitofficial',3,'대코캠 운영진','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">대코캠 운영진</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("top_codeitofficial_2"));</script></td>
+					<td class="td_date">2021.02.17.</td>
+					<td class="td_view">1.4만</td>
+					
+						<td class="td_likes">24</td>
+					
+				</tr>
+			
+				
+				
+
+				<tr class="_noticeArticle board-notice type_main">
+					<td colspan="2" class="td_article">
+						
+						<div class="board-tag">
+							<strong class="board-tag-txt">
+								<span class="inner">공지</span>
+							</strong>
+                        </div>
+						<div class="board-list">
+							<div class="inner_list">
+								
+								
+									
+									
+										
+									
+								
+								<a href='/ArticleRead.nhn?clubid=30367563&amp;menuid=75&amp;boardtype=L&amp;page=1&amp;specialmenutype=&amp;userDisplay=15&amp;articleid=5081' onclick="clickcr(this, 'gnr.notice','','',event);" class="article">
+                                    
+                                    
+
+									데일리 출석 인증 안내
+								</a>
+
+								
+								
+								
+
+
+								
+								
+									<a href="/ArticleRead.nhn?clubid=30367563&amp;menuid=75&amp;boardtype=L&amp;page=1&amp;specialmenutype=&amp;userDisplay=15&amp;articleid=5081&amp;commentFocus=true" onclick="clickcr(this, 'gnr.noticecmt', '', '', event);" class="cmt">
+										[<em>174</em>]
+									</a>
+								
+
+								
+								
+							</div>
+						</div>
+					</td>
+
+					<td class="td_name"><div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'codeitofficial',3,'대코캠 운영진','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">대코캠 운영진</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("top_codeitofficial_3"));</script></td>
+					<td class="td_date">2021.03.29.</td>
+					<td class="td_view">9,737</td>
+					
+						<td class="td_likes">21</td>
+					
+				</tr>
+			
+		
+
+		
+		
+		</tbody>
+	</table>
+</div>
+
+
+
+
+
+
+<div class="article-board m-tcol-c">
+    
+    
+    
+    
+    
+    
+        
+    
+
+    <table>
+        <caption><span class="blind">게시물 목록</span></caption>
+        <colgroup>
+            
+                
+                
+                    
+                        
+                            <col style="width:88px;">
+                            <col>
+                            <col style="width:118px">
+                            <col style="width:80px">
+                            <col style="width:68px">
+                            <col style="width:68px">
+                        
+                        
+                    
+                
+            
+
+        </colgroup>
+        <tbody>
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">20532</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=20532&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 윤도경 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'vetiver98',3,'9기 윤도경 55','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 윤도경 55</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_vetiver98_0"));</script>
+                </td>
+                <td class="td_date">2021.08.21.</td>
+                <td class="td_view">9</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">20185</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=20185&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 김민홍 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'seven00127',3,'9기 김민홍 45','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 김민홍 45</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_seven00127_1"));</script>
+                </td>
+                <td class="td_date">2021.08.15.</td>
+                <td class="td_view">16</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19628</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19628&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 박현아 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'yng08016',3,'9기 박현아 75','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 박현아 75</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_yng08016_2"));</script>
+                </td>
+                <td class="td_date">2021.08.11.</td>
+                <td class="td_view">20</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19516</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19516&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 유태진 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'gkgkdpeor',3,'9기 유태진 77','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 유태진 77</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_gkgkdpeor_3"));</script>
+                </td>
+                <td class="td_date">2021.08.10.</td>
+                <td class="td_view">13</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19495</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19495&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 백명상 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'bms6168',3,'9기 백명상 43','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 백명상 43</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_bms6168_4"));</script>
+                </td>
+                <td class="td_date">2021.08.10.</td>
+                <td class="td_view">7</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19494</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19494&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 류지나 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'fbwlsk7177',3,'9기 류지나 80','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 류지나 80</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_fbwlsk7177_5"));</script>
+                </td>
+                <td class="td_date">2021.08.10.</td>
+                <td class="td_view">14</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19492</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19492&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 김혜원 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'newwork7979',3,'9기 김혜원 37','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 김혜원 37</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_newwork7979_6"));</script>
+                </td>
+                <td class="td_date">2021.08.10.</td>
+                <td class="td_view">10</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19485</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19485&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 정윤지 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'yoongdi_',3,'9기 정윤지 31','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 정윤지 31</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_yoongdi__7"));</script>
+                </td>
+                <td class="td_date">2021.08.09.</td>
+                <td class="td_view">9</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19467</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19467&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 조호연 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'whghdus0246',3,'9기 조호연 14','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 조호연 14</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_whghdus0246_8"));</script>
+                </td>
+                <td class="td_date">2021.08.09.</td>
+                <td class="td_view">13</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19466</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19466&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 조서현 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'glindacho',3,'9기 조서현 12','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 조서현 12</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_glindacho_9"));</script>
+                </td>
+                <td class="td_date">2021.08.09.</td>
+                <td class="td_view">14</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19461</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19461&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 김혜민 자기소개 
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'hyemin0901',3,'9기 김혜민 87','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 김혜민 87</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_hyemin0901_10"));</script>
+                </td>
+                <td class="td_date">2021.08.08.</td>
+                <td class="td_view">18</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19459</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19459&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 양유선 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'diddbtjs2',3,'9기양유선4324','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기양유선4324</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_diddbtjs2_11"));</script>
+                </td>
+                <td class="td_date">2021.08.08.</td>
+                <td class="td_view">12</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19449</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19449&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 서강진 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 's970406',3,'9기 서강진 51','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 서강진 51</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_s970406_12"));</script>
+                </td>
+                <td class="td_date">2021.08.08.</td>
+                <td class="td_view">13</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19446</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19446&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 조향미 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'jek0107',3,'9기 조향미 95','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 조향미 95</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_jek0107_13"));</script>
+                </td>
+                <td class="td_date">2021.08.08.</td>
+                <td class="td_view">18</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+            
+            <tr>
+                <td colspan="2" class="td_article">
+                    
+
+                    
+                        <div class="board-number"><div class="inner_number">19437</div></div>
+                    
+
+                    
+
+                    <div class="board-list">
+                        <div class="inner_list">
+                            
+                                
+                                
+                                    
+                                
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                            <a class="article" href="/ArticleRead.nhn?clubid=30367563&amp;page=1&amp;menuid=75&amp;boardtype=L&articleid=19437&referrerAllArticles=false" onclick="clickcr(this, 'gnr.title','','',event);">
+                                
+                                
+
+                                
+                                
+
+                                
+                                
+                                    
+                                    9기 김대현 자기소개
+                                    
+                                
+                            </a>
+
+                            
+                            
+                            
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+                            
+
+                            
+                            
+
+                            
+                        </div>
+                    </div>
+                </td>
+                <td class="td_name">
+                    <div class="pers_nick_area"><table role="presentation" cellspacing="0"><tr><td class="p-nick"><a href="#" class="m-tcol-c" onclick="ui(event, 'iuw1096',3,'9기 김대현 31','30367563','', 'false', 'false', 'studentcodingcamp', 'false', '75'); return false;">9기 김대현 31</a><span class="mem-level"></span></td></tr></table></div><script type="text/javascript">wordBreak($("article_iuw1096_14"));</script>
+                </td>
+                <td class="td_date">2021.08.07.</td>
+                <td class="td_view">20</td>
+                
+                    <td class="td_likes">0</td>
+                
+            </tr>
+
+            
+            
+        
+        </tbody>
+    </table>
+</div>
+
+
+<div class="post_btns">
+    
+        
+        
+            
+            
+
+            
+            <div class="fr">
+                
+                
+
+                
+
+                
+
+                
+            </div>
+        
+    
+</div>
+
+
+
+<form name="frmDelete" method="post" action="/ArticleDelete.nhn" style="display:none">
+    <input type="hidden" name="clubid" value="30367563">
+    <input type="hidden" name="menuid" value="75">
+    <input type="hidden" name="boardtype" value="L">
+    <input type="hidden" name="page" value="1">
+    <input type="hidden" name="articleid">
+    <input type="hidden" name="userDisplay" value="15">
+    
+      
+    
+</form>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/static/js/mycafe/common/bastat/ScriptBAStatLog-1585128038000-108816.js" charset="UTF-8"></script>
+
+
+<script type="text/javascript">
+    var LOG_KEY = "CAFE_UUID";
+
+    function uuidv4() {
+		var uuid = "", i, random;
+		for (i = 0; i < 32; i++) {
+		random = Math.random() * 16 | 0;
+		if (i == 8 || i == 12 || i == 16 || i == 20) {
+		  uuid += "-"
+		}
+		uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
+		}
+		return uuid;
+    }
+
+    function getDeviceId() {
+    	try {
+		  if (!localStorage.getItem(LOG_KEY)) {
+			localStorage.setItem(LOG_KEY, uuidv4());
+		  }
+
+		  return localStorage.getItem(LOG_KEY);
+		} catch (e) {
+		  // silent
+		  console.error("Can't access localStorage");
+		  return "__UNKNOWN__";
+		}
+    }
+
+    function getReferrerForBA() {
+        if (typeof(window.top.articleReadBalog) === "undefined") {
+            window.top.articleReadBalog = {
+                useIframeReferrer: false
+            };
+        }
+        if (!window.top.articleReadBalog.useIframeReferrer && !!window.top.document.referrer) {
+            window.top.articleReadBalog.useIframeReferrer = true;
+            return window.top.document.referrer;
+        }
+        return document.referrer;
+    }
+
+    var oBAStatSender = new cafe.BAStatSender({
+        oClient : {
+            service_id: 'cafe',
+            user_key: '__UNKNOWN__',
+            os_name: '__UNKNOWN__',
+            os_ver: '-1',
+            app_ver: '-1',
+            country: 'XX',
+            language: 'xx',
+            device_id: getDeviceId(),
+            device_model: '__UNKNOWN__',
+            product: 'web',
+            client_context: {
+                'nnb': '' // CafeBaseAction.java
+            }
+        },
+        sEnv: 'real'
+    });
+</script>
+
+
+
+
+
+<script type="text/javascript">
+    oBAStatSender.send([
+        {
+            eventType: cafe.BAStatEventType.ARTICLE_LIST,
+            extra: {
+                cafe_id: '30367563',
+                menu_id: '75',
+                article_type: 'NORMAL'
+            }
+        }
+    ]);
+</script>
+
+<script type="text/javascript">
+    function goMenu(nMenuId)	{
+        setTimeout(function () {
+            parent.oMenuMoveUpdater.update(nMenuId);
+        }, 1);
+    }
+</script>
+
+
+
+<div class="prev-next">
+
+	
+	
+		<span class="blind">페이지 네비게이션</span>
+
+    <a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=1" class="on">1</a>
+    <a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=2">2</a>
+    <a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=3">3</a>
+    <a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=4">4</a>
+    <a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=5">5</a>
+    <a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=6">6</a>
+    <a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=7">7</a>
+    <a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=8">8</a>
+    <a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=9">9</a>
+    <a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=10">10</a>
+
+<a href="/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=11" class="pgR"><span class="m-tcol-c">다음</span></a>
+
+	
+
+</div>
+
+<iframe name="wordchk" id="wordchk" width=0 height=0 frameborder=0 style="display:none" title="빈프레임"></iframe>
+
+    
+
+
+
+
+
+<div class="list-search">
+    <form name="frmSearch" action="" onsubmit="return false;">
+        
+        
+        
+
+        
+        <input type="hidden" name="searchdate" id="searchdate" value="all" />
+        <div class="select_component" style="width: 144px" id="divSearchDate">
+            
+                
+                
+                
+                
+                
+                
+                    
+                
+                
+            
+            <a href="#" onclick="nhn.search.toggleBoxLayer('divSearchDate');return false;" id="currentSearchDate" class="select_box">전체기간</a>
+            <ul class="select_list" style="width:291px;max-height:295px;" >
+                <li><a href="#" onclick="applySearchOption('searchdate', 'all', 'currentSearchDate', this);nhn.search.toggleBoxLayer('divSearchDate');return false;">전체기간</a></li>
+                <li><a href="#" onclick="applySearchOption('searchdate', '1d', 'currentSearchDate', this);nhn.search.toggleBoxLayer('divSearchDate');return false;">1일</a></li>
+                <li><a href="#" onclick="applySearchOption('searchdate', '1w', 'currentSearchDate', this);nhn.search.toggleBoxLayer('divSearchDate');return false;">1주</a></li>
+                <li><a href="#" onclick="applySearchOption('searchdate', '1m', 'currentSearchDate', this);nhn.search.toggleBoxLayer('divSearchDate');return false;">1개월</a></li>
+                <li><a href="#" onclick="applySearchOption('searchdate', '6m', 'currentSearchDate', this);nhn.search.toggleBoxLayer('divSearchDate');return false;">6개월</a></li>
+                <li><a href="#" onclick="applySearchOption('searchdate', '1y', 'currentSearchDate', this);nhn.search.toggleBoxLayer('divSearchDate');return false;">1년</a></li>
+                <li id="date_input_area">
+                    <div id="date_enter" class="date_enter">
+                        <span id="explain_period" class="tit">기간 입력</span>
+
+                        
+                            
+                            
+                                <input type="text" id="input_1" maxlength="10" value="2017-12-26">
+                                <input type="text" id="input_2" maxlength="10" value="2018-01-12">
+                            
+                        
+                        <button id="btn_set" class="btn_set">설정</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <input type="hidden" name="searchBy" id="searchBy" value="0" />
+        <div class="select_component" style="width: 144px" id="divSearchBy">
+            
+            
+                
+                    
+                    
+                    
+                    
+                    
+                        
+                    
+                
+                <a href="#" onclick="nhn.search.toggleBoxLayer('divSearchBy');return false;" id="currentSearchBy" class="select_box">제목만</a>
+                <ul class="select_list">
+                    
+                    <li><a href="#" onclick="applySearchOption('searchBy', '1', 'currentSearchBy', this);nhn.search.toggleBoxLayer('divSearchBy');return false;">제목만</a></li>
+                    <li><a href="#" onclick="applySearchOption('searchBy', '3', 'currentSearchBy', this);nhn.search.toggleBoxLayer('divSearchBy');return false;">글작성자</a></li>
+                    <li><a href="#" onclick="applySearchOption('searchBy', '4', 'currentSearchBy', this);nhn.search.toggleBoxLayer('divSearchBy');return false;">댓글내용</a></li>
+                    <li><a href="#" onclick="applySearchOption('searchBy', '5', 'currentSearchBy', this);nhn.search.toggleBoxLayer('divSearchBy');return false;">댓글작성자</a></li>
+                </ul>
+            
+        </div>
+
+        <div class="input_search_area">
+            <div class="input_component" style="width: 200px">
+                <input type="text" id="query" name="query" placeholder="검색어를 입력해주세요" value="" onkeydown="if (event.keyCode == 13) {nhn.search.goSearch(this,false);clickcr(this, 'sch.bsearch','','',event)}">
+            </div>
+            <button onclick="nhn.search.goSearch(this,false);clickcr(this, 'sch.bsearch','','',event); return false;" class="btn-search-green">검색</button>
+        </div>
+    </form>
+</div>
+
+
+<ul id="oLayer"></ul>
+
+
+	
+	
+		
+	
+
+
+
+
+
+
+
+
+<span id="_noticeColor" class="m-tcol-p" style="display: none">font</span>
+<div class="power_ad">
+    <span class="border top"></span>
+    <span class="border left"></span>
+    <span class="border right"></span>
+    <span class="border bottom"></span>
+
+
+
+
+
+
+
+<script type="text/javascript">
+    var CALP_VALUE = {
+        "ArticleRead": "end",
+        "ArticleList": "list",
+        "ArticleSearchList": "list"
+    };
+
+    var pageFrom = "ArticleList";
+    var calpValue = CALP_VALUE[pageFrom];
+    var adPlaceReport = "CAFE_ARTICLE_LIST";
+
+
+    
+    var cafeId = "30367563";
+    var cafeUrl = "studentcodingcamp";
+    var advertKeyword = "";
+    var articleGdId = "";
+    var articleId = "";
+    var menuId = "";
+    var title = "";
+    var skinType = "WIDE_SKIN";
+    var skinTone = "LIGHT";
+    // old skin
+    var oldSkinNoticeFontColor = Element.getCSS($('_noticeColor'), "color");
+
+    var ADVERT_FONT_COLOR = {
+        'WIDE_SKIN' : {
+            'LIGHT' : {
+                'DEFAULT_COLOR' : "rgb(34, 34, 34)", // #222222
+                'HIGHTLIGHT_COLOR' : "rgb(7, 26, 200)" // #071AC8
+            },
+            'DARK' : {
+                'DEFAULT_COLOR' : "rgb(177, 177, 177)", // #B1B1B1
+                'HIGHTLIGHT_COLOR' : "rgb(255, 255, 255)" // #FFFFFF
+            }
+        },
+        'OLD_SKIN' : {
+            'LIGHT' : {
+                'DEFAULT_COLOR' : "rgb(34, 34, 34)", // #222222
+                'HIGHTLIGHT_COLOR' : oldSkinNoticeFontColor
+            },
+            'DARK' : {
+                'DEFAULT_COLOR' : "rgb(177, 177, 177)", // #B1B1B1
+                'HIGHTLIGHT_COLOR' : oldSkinNoticeFontColor
+            }
+        }
+    };
+
+    //generate uuid
+    function uuidv4() {
+        var uuid = "", i, random;
+        for (i = 0; i < 32; i++) {
+            random = Math.random() * 16 | 0;
+            if (i == 8 || i == 12 || i == 16 || i == 20) {
+                uuid += "-"
+            }
+            uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
+        }
+        return uuid;
+    }
+
+    var deviceId = getDeviceId();
+    var requestId = uuidv4();
+    var spwp = spwp || {};
+    spwp.cmd = spwp.cmd || [];
+    spwp.cmd.push(function () {
+        spwp.setConfig({
+            enablePersistAd: false
+        });
+
+        if (pageFrom === "ArticleList") {
+            menuId = "75";
+            title = "9기 유태진 자기소개";
+        } else if (pageFrom === "ArticleSearchList") {
+            menuId = "75";
+            advertKeyword = "null";
+            title = "";
+        } else if (pageFrom === "ArticleRead") {
+            title = "";
+            articleGdId = "";
+            articleId = "";
+            menuId = "";
+            advertKeyword = "";
+        }
+
+        var fontColorType = "";
+        if (skinType === "" || skinTone === "") {
+            fontColorType = ADVERT_FONT_COLOR['WIDE_SKIN']['LIGHT'];
+        } else {
+            fontColorType = ADVERT_FONT_COLOR[skinType][skinTone];
+        }
+
+        var adUnits = [{
+            unitId: "pcweb_cafe",
+            divId: "powerAd-div",
+
+            extraOption: {
+                calp: calpValue,
+                mediaParams: {
+                    styleDefault: fontColorType.DEFAULT_COLOR,
+                    styleHighlight: fontColorType.HIGHTLIGHT_COLOR,
+                    gdid: articleGdId,
+                    pk: advertKeyword,
+                    cas: cafeUrl,
+                    cid: cafeId,
+                    boardId: menuId,
+                    pid: articleId,
+                    mediaRequestId: requestId,
+                    title: title
+                }
+            }
+        }];
+
+        var eventList = {};
+        eventList[spwp.GfpAdEvent.Type.AD_LOAD] = function (adEvent) {
+            oGroupSSPAdvertReporter.report(oGroupSSPAdvertReporter.REQUEST_PARAM.REPORT_TYPE.ACK, spwp.GroupSSP);
+        };
+
+        eventList[spwp.GfpAdErrorEvent.Type.AD_LOAD_FAILED] = function (adErrorEvent) {
+            oGroupSSPAdvertReporter.report(oGroupSSPAdvertReporter.REQUEST_PARAM.REPORT_TYPE.NO_FILL, spwp.GroupSSP);
+        };
+
+        eventList[spwp.GfpAdEvent.Type.AD_IMPRESSION] = function (adEvent) {
+            oGroupSSPAdvertReporter.report(oGroupSSPAdvertReporter.REQUEST_PARAM.REPORT_TYPE.IMP, spwp.GroupSSP);
+            if (pageFrom === "ArticleRead") {
+                try {
+                    parent.resizeIframe('cafe_main');
+                } catch (x) {}
+            }
+        };
+
+        eventList[spwp.GfpAdEvent.Type.AD_CLICK] = function (adEvent) {
+            oGroupSSPAdvertReporter.report(oGroupSSPAdvertReporter.REQUEST_PARAM.REPORT_TYPE.CLICK, spwp.GroupSSP);
+        };
+
+        /* SSP sdk call */
+        spwp.addAdUnits(adUnits);
+        spwp.setAdListener({eventList: eventList});
+        spwp.requestAds({
+            adUnitIds: ["pcweb_cafe"]
+        });
+    });
+
+    var initSSpAd = function () {
+        var daGroupSSPUrl = "https://ipada.cafe.naver.com";
+        var daGroupSSPRequestParameter = {
+            serviceId: 'cafe',
+            platform: "PC_WEB",
+            creativeType: oGroupSSPAdvertFinder.REQUEST_PARAM.CREATIVE_TYPE.SA,
+            adPlacement: adPlaceReport,
+            requestCount: 1,
+            userKey: "",
+            deviceId: deviceId,
+            requestId: requestId,
+            language: navigator.language,
+            os: oGroupSSPAdvertFinder.os(),
+            cafeId: cafeId,
+            postId: ""
+        };
+
+        oGroupSSPAdvertFinder.findWithDA(daGroupSSPUrl, daGroupSSPRequestParameter, "", spwp, null);
+    };
+
+    if (window.addEventListener) {
+        window.addEventListener("load", initSSpAd, false);
+    } else if (window.attachEvent) {
+        window.attachEvent("onload", initSSpAd);
+    } else {
+        window.onload = initSSpAd;
+    }
+</script>
+<div id="powerAd-div">
+    <script>
+        var rqc = 15609560;
+        spwp.cmd.push(function () {
+            spwp.renderAd("powerAd-div");
+        });
+    </script>
+</div>
+</div>
+
+
+
+
+<script type="text/javascript" src="/static/js/mycafe/common/groupssp/ScriptGroupSSPAdvert-1617013670000-12349.js" charset="EUC-KR"></script>
+
+
+<script type="text/javascript">
+var oGroupSSPAdvertFinder = new cafe.GroupSSP.Advert.Finder();
+var oGroupSSPAdvertReporter = new cafe.GroupSSP.Advert.Reporter();
+</script>
+
+
+
+<div id="restrict_layer" class="restrict" style="left:200px; top:300px; display:none;">
+	<p><strong>접근 제한중</strong>인 게시판의 게시글입니다.</p>
+	<span class="shadow shadow1"></span><span class="shadow shadow2"></span><span class="shadow shadow3"></span>
+</div>
+
+</div> 
+</div> 
+
+
+
+<div class="worn_layer_popup" style="width:360px; top:350px; left:10px; display:none;" id="MessageBoxLayer">
+	<!-- PNG Gradation -->
+	<div class="shadow1">
+		<div class="shadow1_side">
+			<div class="shadow2">
+				<div class="shadow2_side">
+					<div class="border_type">
+						<!-- 콘텐트 -->
+						<div class="content">
+							<div class="_contentMessage"></div>
+							<div class="btn_box nomargin">
+								<a class="_btnClose" href="#"><img src="https://cafe.pstatic.net/cafe4/btn_close2.gif" width="38" height="21" alt="닫기"></a>
+								<a class="_btnConfirm" href="#"><img src="https://cafe.pstatic.net/cafe4/btn_confirm6.gif" width="38" height="21" alt="확인"></a>
+								<a class="_btnCancel" href="#"><img src="https://cafe.pstatic.net/cafe4/btn_cancel.gif" width="38" height="21" alt="취소"></a>
+							</div>
+						</div>
+						<a class="_btnExit closelayer" href="#BtnCLose"><img src="https://ssl.pstatic.net/static/book/publishingcompany/btn_close.gif" alt="닫기" width="15" height="14"></a>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+<form name="pwmForm" method="POST" action="" target="">
+    <input type="hidden" name="ugcTypeName" value=""/>
+    <input type="hidden" name="prohibitWords" value=""/>
+</form>
+<form name="boardNoticeRemoveFrm" action="/BoardNoticeDelete.nhn" method="post">
+	<input type="hidden" name="articleId" value=""/>
+</form>
+
+<script type="text/javascript" src="/static/js/mycafe/CafeSearchWide-1627722945000-28188.js" charset="UTF-8"></script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    
+    var nsc = "cafe.mycafe";
+
+    var oCL = new Ju.controlLayer({
+        onShow : function(oElement){
+            
+            parentResizeIframe('cafe_main', 'true');
+        },
+        onHide : function(){
+            
+        }
+    });
+
+    
+    var cLayer = new Ju.controlLayer();
+    function alertArticleInBadMenu(evt) {
+        if(evt != "off"){
+            var evt = evt || window.event;
+            cLayer.show('restrict_layer',evt,null,null);
+        }else if(evt=="off") cLayer.hide('restrict_layer');
+    }
+
+    
+    
+    function dynamicParamLink(reqURL, event){
+        try{
+            
+            if(event) {
+                if(event.ctrlKey || event.metaKey) {
+                    return;
+                }
+            }
+
+            document.location.href = reqURL;
+        }catch(er){
+        }
+        return false;
+    }
+
+    window.onload = LH_exec;
+
+    LH.add("parent.setTopInIframe()");
+    LH.add("parentResizeIframe('cafe_main')");
+    LH.add("writelcs()");
+    
+
+
+    function writelcs() {
+        var code;
+        
+        
+        
+        
+        
+        try{
+            var etc = {};
+            etc["sti"] = "cafe_article_list_specific";
+            lcs_do(etc);
+        }catch(e) {}
+        
+        
+        
+        
+    }
+
+    
+
+    function removeNotice(e, articleid) {
+        
+    }
+
+    function viewMyMemberLevel() {
+        open_window("/MemberLevelView.nhn?m=mylevelview&clubid=30367563", "mylevelview", 450, 300, "");
+    }
+
+    
+
+    // 구스킨
+    function toggleOnSale() {
+        var showSales = document.getElementById("show_sales");
+        if(showSales && showSales.checked) {
+            changeMarketBoardTab('A'); 
+            clickcr(this, 'gdb.sellon', '', '', '');
+        } else {
+            changeMarketBoardTab('D'); 
+            clickcr(this, 'gdb.selloff', '', '', '');
+        }
+    }
+
+    // 와이드스킨
+    function changeStatusOnSaleCheckBoxes() {
+        var elChkEscrow = document.getElementById("checkboxEscrowOnSale");
+        var elChkCommon = document.getElementById("checkboxOnSale");
+
+        if (elChkEscrow.checked) {
+            // 안전거래 + 판매중
+            elChkCommon.checked = true;
+            elChkCommon.disabled = true;
+            changeMarketBoardTab('W');
+            clickcr(this, 'gdb.safe','','',event);
+        } else if (elChkCommon.checked) {
+            // 일반거래 + 판매중
+            elChkCommon.disabled = false;
+            changeMarketBoardTab('A');
+            clickcr(this, 'gdb.sellon', '', '', '');
+        } else {
+            // 전체거래
+            elChkCommon.disabled = false;
+            changeMarketBoardTab('D');
+            clickcr(this, 'gdb.selloff', '', '', '');
+        }
+    }
+
+    function changeMarketBoardTab(marketBoardTab) {
+        document.location.href = "/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.marketBoardTab=" + marketBoardTab;
+    }
+
+    
+    function sortBy(type, e){
+        $("sortBy").value = type;
+        nhn.search.goSearch(e || window.event);
+    }
+    
+
+    
+    
+
+    
+    nhn.search.init(false, "https://cafe.naver.com", 30367563, 15, false, 75);
+    
+    
+
+    
+    function showLayer(obj, layerName){
+        var pos = Element.realPos(obj);
+        var elLayer = $(layerName);
+
+        oCL.show(layerName);
+        if( elLayer.style.display != 'none' ) {
+            elLayer.style.top = (pos.top + 14 ) + 'px';
+            elLayer.style.left = (pos.left - 8 ) + 'px';
+        }
+    }
+
+    function applySearchOption(sParamElId, sValue, sViewElId, elSelected) {
+        $(sParamElId).value = sValue;
+
+        var elSelectBox = $(sViewElId);
+        elSelectBox.innerHTML = elSelected.innerHTML;
+    }
+
+    
+    
+    var oNoticeDisplayHandler = new NoticeDisplayHandler({boardType : "L"});
+    
+
+
+    
+    
+
+    
+    (function() {
+        Event.register(window, "load", function() {
+            Tablet.editing.ClickAlert()
+                .check({
+                    bAccessTabletPC : false,
+                    bReadOnlyStatus : false,
+                    bMarketBoard : false,
+                    bHasArticleForm : false,
+                    bHasTemplate : false
+                })
+                .click("writeFormBtn").run(function() {
+                writeArticle();
+            })
+                .click(cssquery("a[name=modifyLink]")).run(function() {
+                // empty
+            });
+        });
+    })();
+
+
+    //--------------- Mac Safari bug --------------------------
+    function controlTagClickEvent(e){
+        if(!!$Agent() && $Agent().macSafari ){
+            var controlTagName = ["a"];
+            var elTarget = e.element,
+                sTargetUrl = null;
+            if(elTarget != null ){
+                //elTarget.href+"" != document.location.href+"#" => (ex) '<a href="#"' 처리
+                if(elTarget.tagName.toLowerCase() == "a" && elTarget.href+"" != document.location.href+"#"){
+                    elTarget.target="_top";
+                }
+
+            }
+        }
+    }
+
+    (function() {
+        if(!!$Agent() && $Agent().macSafari ){
+            Event.register(window, "load", function() {
+                if($('main-area') != null){
+                    Event.register($('main-area'), 'click', this.controlTagClickEvent.bindForEvent(this));
+                }
+            });
+        }
+    })();
+
+    //--------------- Mac Safari  End --------------------------
+    var bTablet = false;
+    var oTabletHandler = new TabletHandler(bTablet);
+
+    
+    
+    function findMenuName() {
+        if(false) {
+            if("" == "M") {
+                return "동영상 모아보기";
+            }else if("" == "P") {
+                return "이미지 모아보기";
+            }
+            return "전체글보기";
+        } else {
+            return "[9기] 자기소개";
+        }
+    }
+
+    var cafenameTitle = "대학생 코딩 캠프 with 코드잇";
+    var pageTitle = findMenuName() +','+ cafenameTitle + ' : ' +  '네이버 카페' ;
+    LH.add(changeTitle(pageTitle));
+    
+    
+    LH.add("skipToMobileweb('https://m.cafe.naver.com/studentcodingcamp/menu/75')");
+    
+    
+    LH.add(initTopLayerQuery());
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="/static/css/main/css/ip_layer_2-1577769455000-2931.css" type="text/css">
+
+
+<script type="text/javascript">
+	function openLoginLayer() {
+		var loginCheckOk = "https://cafe.naver.com/LoginCheck.nhn?m=login";
+		checkFrame.location.replace("https://nid.naver.com/nidlogin.login?mode=form&svctype=40960&id=&url="+loginCheckOk);
+
+		
+		var layerScrollTop = parent.document.getElementsByTagName('HTML')[0].scrollTop;
+        var layerClientHeight = parent.document.getElementsByTagName('HTML')[0].clientHeight;
+        var layerPosition = layerScrollTop + (layerClientHeight * 0.5);
+        document.getElementById("login_layer").style.top = layerPosition + "px";
+        
+		document.getElementById("login_layer_bg").style.display = "";
+		document.getElementById("login_layer").style.display = "";
+    	document.getElementById("login_layer").focus();		
+	}
+
+	function closeLoginLayer() {
+		document.getElementById("login_layer_bg").style.display = "none";
+	    document.getElementById("login_layer").style.display = "none";
+	}
+</script>
+<div id="login_layer_bg" style="z-index:100;display:none;position:absolute;width:100%;height:3800px;top:0px;left:0px;background-color:GRAY;filter:alpha(opacity=20);-moz-opacity:0.2;">
+  <iframe id="login_layer_bg_iframe" frameborder="0" style="position:absolute;top:0px;left:0px;width:100%;height:3800px;background-color:GRAY;filter:alpha(opacity=20);-moz-opacity:0.2;" title="로그인영역"></iframe>
+</div>
+<div id="login_layer" class="layerpopup" style="z-index:1001; width:394px; top:400px; left:35%; display:none;">
+  <div class="shadow1">
+  <div class="shadow1_side">
+		<div class="shadow2">
+        <div class="shadow2_side">
+			<div class="shadow3">
+	        <div class="shadow3_side">
+               
+			<div class="border_type">
+				<div class="logbox_wrap">
+
+					<p class="notice">회원님의 안전한 서비스 이용을 위해 <strong>비밀번호를 확인해 주세요.</strong></p>
+
+	           		<p class="notice02" id="layerd_notice01" style="display:none;">IP가 자주 변경되는 네트워크 환경에서 로그인하는 경우 <br><strong>IP보안을 해제</strong> 후 이용하시기 바랍니다.</p>
+					<p class="notice02">다시 한번 <strong>비밀번호 확인</strong> 하시면 이용중인 화면으로 돌아가며, 작성 중이던<br>내용을 정상적으로 전송 또는 등록하실 수 있습니다.</p>
+	
+					<a href="javascript:closeLoginLayer();" class="closelayer" role="button"><img src="https://ssl.pstatic.net/static/ws/btn_close.gif" alt="닫기" width="15" height="14"></a>
+	           		<div class="frame_wrap type03"><iframe id="checkFrame" name="checkFrame" width="350" height="163" frameborder="0"  scrolling="no" marginheight="0" marginwidth="0" title="빈프레임"></iframe></div>
+	
+				</div>
+			</div>
+			
+          	</div>
+			</div>
+        </div>
+		</div>
+  </div>
+  </div>
+</div>
+
+	
+	
+
+</body>
+</html>
+
