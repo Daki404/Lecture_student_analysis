@@ -2472,7 +2472,7 @@ var oGroupSSPAdvertReporter = new cafe.GroupSSP.Advert.Reporter();
 
         if (pageFrom === "ArticleList") {
             menuId = "75";
-            title = "9기 유태진 자기소개";
+            title = "9기 조향미 자기소개";
         } else if (pageFrom === "ArticleSearchList") {
             menuId = "75";
             advertKeyword = "null";
@@ -2573,7 +2573,7 @@ var oGroupSSPAdvertReporter = new cafe.GroupSSP.Advert.Reporter();
 </script>
 <div id="powerAd-div">
     <script>
-        var rqc = 15609560;
+        var rqc = 15792031;
         spwp.cmd.push(function () {
             spwp.renderAd("powerAd-div");
         });
