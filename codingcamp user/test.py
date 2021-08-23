@@ -1,18 +1,11 @@
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
-import re
+from selenium import webdriver
+import time
 
-html = urlopen('https://cafe.naver.com/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L')
-bs = BeautifulSoup(html.read(), 'html.parser', from_encoding='ANSI')
+options = webdriver.ChromeOptions()
+options.add_argument('headless')
+driver = webdriver.Chrome(executable_path='chromedriver', chrome_options=options)
 
-tmp = bs.find_all(class_='article', href=re.compile('.*Articles=false'))
-for i in tmp:
-    print(i.get('href'))
-
-
-
-'''
-with open('cafe.txt', 'w', encoding='utf-8') as f:
-    for i in tmp:
-        print()
-        '''
+url = 'https://cafe.naver.com/ArticleRead.nhn?clubid=30367563&page=1&menuid=75&boardtype=L&articleid=19437&referrerAllArticles=false'
+driver.get(url)
+time.sleep(3)
+print(driver.page_source)

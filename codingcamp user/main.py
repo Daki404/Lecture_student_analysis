@@ -1,11 +1,18 @@
+from urllib.request import urlopen
 from bs4 import BeautifulSoup
-import requests
+import re
 
-url = 'https://cafe.naver.com/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L'
-html = requests.get(url).text
+html = urlopen('https://cafe.naver.com/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L')
+bs = BeautifulSoup(html.read(), 'html.parser', from_encoding='ANSI')
 
-#with open('cafe.txt', 'w', encoding='utf-8') as f:
-#    f.write(html)
+tmp = bs.find_all(class_='article', href=re.compile('.*Articles=false'))
+for i in tmp:
+    print(i.get('href'))
 
-bs = BeautifulSoup(html, 'html.parser')
-print(bs)
+
+
+'''
+with open('cafe.txt', 'w', encoding='utf-8') as f:
+    for i in tmp:
+        print()
+        '''
