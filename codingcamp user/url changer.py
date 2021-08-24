@@ -1,12 +1,13 @@
-from urllib import parse
+import requests
+from bs4 import BeautifulSoup
 
-url = 'ArticleRead.nhn?clubid=30367563&page=1&menuid=75&boardtype=L&articleid=19437&referrerAllArticles=false'
+session = requests.Session()
+headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'}
 
-tmp = parse.quote(url)
 
-print(tmp)
-print('ArticleRead.nhn%253Fclubid%3D30367563%2526page%3D1%2526menuid%3D75%2526boardtype%3DL%2526articleid%3D19437%2526referrerAllArticles%3Dfalse')
-print('ArticleRead.nhn%3Fclubid%3D30367563%26page%3D1%26menuid%3D75%26boardtype%3DL%26articleid%3D19437%26referrerAllArticles%3Dfalse%7E')
-print('정답', 'https://cafe.naver.com/studentcodingcamp?iframe_url_utf8=%2FArticleRead.nhn%253Fclubid%3D30367563%2526page%3D1%2526menuid%3D75%2526boardtype%3DL%2526articleid%3D19437%2526referrerAllArticles%3Dfalse')
-print('java', 'https%3A%2F%2Fcafe.naver.com%2Fstudentcodingcamp.cafe%3Fiframe_url%3D%252FArticleRead.nhn%253Fclubid%253D30367563%2526page%253D1%2526menuid%253D75%2526boardtype%253DL%2526articleid%253D19437%2526referrerAllArticles%253Dfalse')
-print('java 반변조','https://cafe.naver.com/studentcodingcamp?iframe_url_utf8='+ '%2FArticleRead.nhn%3Fclubid%3D30367563%26page%3D1%26menuid%3D75%26boardtype%3DL%26articleid%3D20532%26referrerAllArticles%3Dfalse')
+url = 'https://cafe.naver.com/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L&search.totalCount=151&search.cafeId=30367563&search.page=14'
+req = session.get(url, headers=headers)
+
+bs = BeautifulSoup(req.text, 'html.parser')
+print(bs)
+
