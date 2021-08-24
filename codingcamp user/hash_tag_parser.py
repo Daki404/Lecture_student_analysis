@@ -4,7 +4,7 @@ import re
 def preprocess_sentence_kr(text: str) -> str:
     '''text의 다중공백을 삭제하고, return.'''
     text = text.strip()
-    text = re.sub(r"[^a-zA-Z0-9가-힣?.!,¿]+", " ", text)  # \n도 공백으로 대체해줌
+    text = re.sub(r"[^a-zA-Z0-9가-힣?.!¿]+", " ", text)  # \n도 공백으로 대체해줌
     text = text.strip()
     return text
 

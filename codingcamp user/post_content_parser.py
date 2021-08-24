@@ -6,7 +6,7 @@ import re
 def preprocess_sentence_kr(text: str) -> str:
     '''text의 다중공백을 삭제하고, return.'''
     text = text.strip()
-    text = re.sub(r"[^a-zA-Z0-9가-힣?.!,¿]+", " ", text)  # \n도 공백으로 대체해줌
+    text = re.sub(r"[^a-zA-Z0-9가-힣?!¿]+", " ", text)  # \n도 공백으로 대체해줌
     text = text.strip()
     return text
 
@@ -19,7 +19,22 @@ def soup_maker(post_num: str) -> BeautifulSoup:
     return soup
 
 
-def soup_parser(soup: BeautifulSoup, arr=[]):
+def hash_tag_parser(text: list) -> str:
+    print(text)
+    return_text = ''
+    blank = False
+
+    for i in range(len(text)):
+        if (word := text[i]):
+            if blank:
+                return_text += ' '
+                blank = False
+            return_text += word
+        else:
+            blank = True
+
+
+def soup_parser(soup: BeautifulSoup, arr=[]) -> list:
     '''정규표현식을 이용하여 soup parsing.'''
     pattern = re.compile('이름.*cus')
     text_soup = soup.get_text()
@@ -30,17 +45,15 @@ def soup_parser(soup: BeautifulSoup, arr=[]):
     info_text = [preprocess_sentence_kr(i) for i in info_text]
 
     for i in range(0, 3):
-        print(info_text[i][3:])
-    print(info_text[3][19:])
-    print(info_text[4][20:])
-    print(info_text[5][17:-18])
+        arr.append(info_text[i][3:])
+    arr.append(info_text[3][19:])
+    arr.append(info_text[4][20:])
+    arr.append(info_text[5][17:-16])
 
-def hash_tag_parser(text: str) -> tuple:
-    pass
-
-
-soup = soup_maker('19494')
-soup_parser(soup)
+    return arr
 
 
-
+if __name__ == "__main__":
+    soup = soup_maker('18477')
+    tmp = soup_parser(soup)
+    print(tmp)
