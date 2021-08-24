@@ -5,9 +5,10 @@ import re
 html = urlopen('https://cafe.naver.com/ArticleList.nhn?search.clubid=30367563&search.menuid=75&search.boardtype=L')
 bs = BeautifulSoup(html.read(), 'html.parser', from_encoding='ANSI')
 
-tmp = bs.find_all(class_='article', href=re.compile('.*Articles=false'))
+tmp = bs.find_all(class_='inner_number')
+
 for i in tmp:
-    print(i.get('href'))
+    print(i)
 
 
 
