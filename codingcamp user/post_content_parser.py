@@ -34,10 +34,11 @@ def hash_tag_parser(text: list) -> str:
             blank = True
 
 
-def soup_parser(soup: BeautifulSoup, arr=[]) -> list:
+def soup_parser(soup: BeautifulSoup) -> list:
     '''정규표현식을 이용하여 soup parsing.'''
     pattern = re.compile('이름.*cus')
     text_soup = soup.get_text()
+    arr = []
 
     info_text = pattern.search(text_soup).group()
     info_text = info_text.split('-')
@@ -54,6 +55,6 @@ def soup_parser(soup: BeautifulSoup, arr=[]) -> list:
 
 
 if __name__ == "__main__":
-    soup = soup_maker('18477')
+    soup = soup_maker('20185')
     tmp = soup_parser(soup)
     print(tmp)
