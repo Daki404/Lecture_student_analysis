@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 logo_mask = np.array(Image.open('logo.png'))
 
-with open('test.txt', 'r', encoding='UTF-8') as f:
+with open('major.txt', 'r', encoding='UTF-8') as f:
     text = f.read()
 
 wordcloud = WordCloud(font_path='font/NanumGothic.ttf', background_color='white', mode='RGBA', mask=logo_mask).generate(text)
