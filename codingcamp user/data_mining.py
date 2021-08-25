@@ -21,5 +21,16 @@ def draw_id(user_id):
 
 user_name, user_id, user_major, user_tag, user_aim, user_letter = data_maker.data_parsing()
 
+with open('major.txt', 'w', encoding='UTF-8') as f:
+    f.write(' '.join(user_major))
+
+with open('tag.txt', 'w', encoding='UTF-8') as f:
+    f.write(' '.join(user_tag))
+
+with open('aim.txt', 'w', encoding='UTF-8') as f:
+    f.write(' '.join(user_aim))
+
+with open('letter.txt', 'w', encoding='UTF-8') as f:
+    f.write(' '.join(user_letter))
 
 draw_id(user_id)
