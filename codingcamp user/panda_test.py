@@ -1,10 +1,25 @@
+import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import seaborn as sns
-import random
+import data_maker
 
-tmp = [random.randint(14, 22) for _ in range(1000)]
 
-ax = plt.subplots()
-ax = sns.countplot(tmp)
+def draw_id(user_id):
+    fm.get_fontconfig_fonts()
+    font_location = 'C:/Windows/Fonts/NanumGothic.ttf'
+    font_name = fm.FontProperties(fname=font_location).get_name()
+    plt.rc('font', family=font_name)
 
-plt.show()
+    sns.set(font="NanumGothic", style='darkgrid')
+
+    plt.subplots()
+    #plt.xticks(range(10, 22))
+    sns.countplot(user_id)
+    plt.xlabel('Code it! 수강생 학번')
+    plt.savefig('수강생 학번')
+
+
+user_name, user_id, user_major, user_tag, user_aim, user_letter = data_maker.data_parsing()
+
+
+draw_id(user_id)
